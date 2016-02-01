@@ -24,32 +24,51 @@ var rename = require('gulp-rename');
 var jasmine = require('gulp-jasmine-browser');
 var istanbul = require('gulp-istanbul');
 var coveralls = require('gulp-coveralls');
+var jshint = require('gulp-jshint');
+var jscs = require('gulp-jscs');
+var jsdoc = require('gulp-jsdoc3');
+
+// Code lint
+gulp.task('lint', function() {
+  return gulp.src('./src/**/*.js')
+  .pipe(jshint())
+  .pipe(jshint.reporter())
+  .pipe(jshint.reporter('fail'));
+});
+
+// Code Checkstyle
+gulp.task('checkstyle', function() {
+  return gulp.src('./src/**/*.js')
+  .pipe(jscs())
+  .pipe(jscs.reporter())
+  .pipe(jscs.reporter('fail'));
+});
 
 // Concatenate & Minify JS
 gulp.task('build', function() {
-    return gulp.src('./src/js/*.js')
-      .pipe(concat('leafbird.js'))
-      .pipe(rename({suffix: '.min'}))
-      .pipe(uglify())
-      .pipe(gulp.dest('./dest'));
-});
-
-// Coverage tool
-gulp.task('pre-test', function () {
-  return gulp.src(['./src/js/*.js'])
-    // Covering files
-    .pipe(istanbul())
-    // Force `require` to return covered files
-    .pipe(istanbul.hookRequire())
-    // Write the covered files to a temporary directory
-    .pipe(gulp.dest('./coverage/'));
+  return gulp.src(['./src/js/leafbird.js', './src/js/*.js'])
+    .pipe(concat('leafbird.js'))
+    .pipe(rename({suffix: '.min'}))
+    .pipe(uglify())
+    .pipe(gulp.dest('./dest'));
 });
 
 // Unit Testing
 gulp.task('test', function() {
-  return gulp.src(['./src/js/*.js', './test/spec/leafbird.spec.js'])
+  return gulp.src(['./dest/leafbird.min.js', './src/test/*.spec.js'])
     .pipe(jasmine.specRunner({console: true}))
     .pipe(jasmine.headless());
+});
+
+// Coverage tool
+gulp.task('coverage', function() {
+  return gulp.src(['./src/js/*.js'])
+    .pipe(istanbul({includeUntested: true}))
+    .pipe(istanbul.writeReports({
+      dir: './coverage',
+      reporters: ['lcov'],
+      reportOpts: {dir: './coverage'}
+    }));
 });
 
 // Coverage report
@@ -57,3 +76,11 @@ gulp.task('coveralls', function() {
   return gulp.src('./coverage/lcov.info')
     .pipe(coveralls());
 });
+
+gulp.task('doc', function(c) {
+  return gulp.src(['README.md', './src/js/*.js'])
+    .pipe(jsdoc());
+});
+
+// run all tasks
+gulp.task('default', ['lint', 'checkstyle', 'build', 'test', 'coverage']);

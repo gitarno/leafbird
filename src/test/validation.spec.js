@@ -14,10 +14,10 @@
   limitations under the License.
 */
 
-describe('configure', function() {
-  it('Confugure changes on original config.', function() {
-    var leafbrd = Leafbird({});
-    leafbrd.configure({});
-    expect(leafbrd.config).toEqual(undefined);
+describe('validation', function() {
+
+  it('verify if a global object to validation was defined', function() {
+    expect(leafbird.validation).toBeDefined();
   });
+
 });

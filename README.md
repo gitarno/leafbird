@@ -1,10 +1,57 @@
 Leafbird
 ========
 
-[![Build Status](http://img.shields.io/travis/lucasb/leafbird/master.svg)](https://travis-ci.org/lucasb/leafbird)
-[![Coverage Status](http://img.shields.io/coveralls/lucasb/leafbird/master.svg)](https://coveralls.io/github/lucasb/leafbird?branch=master)
+[![Build Status](https://travis-ci.org/leafbirdjs/leafbird.svg?branch=master)](https://travis-ci.org/leafbirdjs/leafbird)
+[![Coverage Status](https://coveralls.io/repos/leafbirdjs/leafbird/badge.svg?branch=master&service=github)](https://coveralls.io/github/leafbirdjs/leafbird?branch=master)
 
-Leafbird is an UI builder based in templates using MVC frontend concepts.
+Leafbird is an UI form builder based on JSON templates using HTML5 features with all modern browsers compatibility.
+
+How to Install
+-----
+- Bower
+
+Simple install bower command and it is already to use.
+```
+bower install leafbird
+```
+
+- No bower
+
+Get `leafbird.min.js` file in 'dest' folder from Github repository and save in your project.
+
+Easy to Start
+-----
+Leafbird is fun, see how to use it is easy:
+
+```html
+<html>
+  <body></body>
+  <script src="./dest/leafbird.min.js" type="text/javascript"></script>
+  <script type="text/javascript">
+    var data = {
+      "name": "text",
+      "type": "text",
+      "default": "Default Value"
+    }
+
+    leafbird.configure({json: data});
+    leafbird.rendering.print(document.body);
+  </script>
+</html>
+```
+For more example see demo folder.
+
+Features
+-----
+Beyond build form from JSON, look what Leafbird also can do:
+
+- Automatically validate forms;
+- Change fields object in runtime;
+- Find for a specific field or group;
+- Get or print a form part;
+- Push model from backend to form in frontend.
+
+To see more, look on documentation.
 
 License
 -----
